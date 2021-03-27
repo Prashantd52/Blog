@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Blog;
 use App\Category;
 use App\Tag;
+use Session;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
@@ -40,6 +41,12 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name'=>'required|unique:blogs,name',
+            'category'=>'required',
+            'tags'=>'required',
+            'content'=>'required'
+        ]);
         $blog=new Blog;
        
         $blog->name=$request->name;
@@ -47,6 +54,7 @@ class BlogController extends Controller
         $blog->content=$request->content;
         $blog->save();
         $blog->tags()->sync($request->tags);
+        session()->flash('success','Blog is created successfully');
         return redirect('home');
     }
 
@@ -85,13 +93,19 @@ class BlogController extends Controller
      */
     public function update(Request $request,$id)
     {
-        
+        $request->validate([
+            'name'=>'required|unique:blogs,name,'.$id,
+            'category'=>'required',
+            'tags'=>'required',
+            'content'=>'required'
+        ]);
         $blog=Blog::find($id);
         $blog->name=$request->name;
         $blog->category_id=$request->category;
         $blog->content=$request->content;
         $blog->save();
         $blog->tags()->sync($request->tags);
+        session()->flash('warning','Blog is updated successfully');
         return redirect('newblog/blogs');
     }
 
@@ -105,6 +119,7 @@ class BlogController extends Controller
     {
         $blog=Blog::find($id);
         $blog->delete();
+        session()->flash('danger','Blog is deleted successfully');
         return redirect()->back();
     }
 }

@@ -9,7 +9,7 @@ Route::get('/myroute','Test@index');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
+Route::middleware(['auth'])->group(function(){
 //category routes
 
 Route::get('category/create','CategoryController@create');
@@ -31,7 +31,10 @@ Route::delete('tag/destroy/{id}','TagController@destroy');
 Route::get('/newblog/new','BlogController@create')->name('n.blog');
 Route::get('/newblog/edit/{id}','BlogController@edit')->name('e.blog');
 Route::post('/newblog/store','BlogController@store');
-Route::get('newblog/blogs','BlogController@index')->name('list.blog');
 Route::put('/newblog/update/{id}','BlogController@update');
 Route::delete('/newblog/delete/{id}','BlogController@destroy')->name('d.blog');
+
+});
+Route::get('newblog/blogs','BlogController@index')->name('list.blog');
 Route::get('/newblog/show/{id}','BlogController@show')->name('show.blog');
+

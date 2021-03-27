@@ -9,26 +9,36 @@
                 <h3 class="card-title">&emsp;Write new Blog</h3>
                 <div class="card-body">
                     <label>Title</label>
-                    <input type="text" class="form-control " name="name" required><br><br>
+                    <input type="text" class="form-control " name="name" >
+                    @error('name')
+                        <span class='text-danger'>{{$message}}</span>
+                    @enderror
+                    <br><br>
                     <div class="row">
                         <label>Choose Categories</label>&emsp;
                         <select class="js-example-basic-single form-select col-5" name="category"  aria-label="Default select example">
-                            <option selected>---select category---</option>
+                            <option selected disabled>---select category---</option>
                             @foreach($categories as $cat)
                             <option value="{{$cat->id}}">{{$cat->name}}</option>
                             @endforeach
-                        </select>              
-                    </div><br>
+                        </select>             
+                    </div>
+                    @error('category')
+                        <span class='text-danger'>{{$message}}</span>
+                    @enderror 
+                    <br>
                     <div class="row">
                         <label>Choose Tags</label>&emsp;&emsp;&emsp;&emsp;
-                        <select class="js-example-basic-multiple form-control col-5" name="tags[]" multiple aria-label="Default select example">
-                            <option selected>select tags</option>
+                        <select class="js-example-basic-multiple form-control col-5" name="tags[]" multiple="multiple" aria-label="Default select example">
+                            <option disabled>---select tags---</option>
                             @foreach($tags as $tag)
                             <option value="{{$tag->id}}">{{$tag->name}}</option>
                             @endforeach
                         </select>              
                     </div><br>
-                    
+                    @error('tags')
+                        <span class='text-danger'>{{$message}}</span>
+                    @enderror
                 </div>
             </div>
             <br>
@@ -38,7 +48,11 @@
             <div class="card-body">
                     
                  <div class="formgroup">
-                    <textarea class="form-control" name="content" required></textarea><br>
+                    <textarea class="form-control" name="content" ></textarea>
+                    @error('content')
+                        <span class='text-danger'>{{$message}}</span>
+                    @enderror
+                    <br>
                     <button class="btn btn-success col-1" type="submit"> Submit</button>
                     <a class="btn btn-outline-dark" href="{{route('list.blog')}}" >Cancel</a>
                 </div>
