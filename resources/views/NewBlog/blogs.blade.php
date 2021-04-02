@@ -52,5 +52,6 @@ $index=1;
             </table>
         </div>
     </div>
+    {{ $blogs->links() }}
 </div>
 @endsection

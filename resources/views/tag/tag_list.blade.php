@@ -42,6 +42,7 @@ $index=1;
         </table>
         </div>
     </div>
+    {{ $tags->links() }}
 </div>
     
 @endsection

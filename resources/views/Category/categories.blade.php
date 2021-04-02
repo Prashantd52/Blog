@@ -44,6 +44,7 @@ $index=1;
         </table>
         </div>
     </div>
+    {{ $categories->links() }}
 </div>
     
 @endsection

@@ -14,7 +14,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories=Category::all();
+        
+        $categories=Category::orderBy('name','ASC')->paginate(10);
         return view('Category.categories')->withCategories($categories);
     }
 

@@ -14,8 +14,8 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tags=Tag::all();
-        //dd($tags);
+        $tags=Tag::paginate(10);
+        
         return view('tag.tag_list')->withTags($tags);
     }
 
