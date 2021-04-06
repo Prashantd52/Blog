@@ -10,9 +10,6 @@ $index=$perPage*$currentPage+1;
         <br>
         <div class="row">
             <h2 class="card-title col-10 pt-2">&emsp;Your Blogs</h2>
-            @if(Auth::user())
-            <a  class="btn btn-info col-1 pt-3" href="/newblog/new">Create</a>
-            @endif
         </div>
         <div class="card-body">
             <table class="table table-bordered" >
@@ -37,15 +34,12 @@ $index=$perPage*$currentPage+1;
             
                 <div class="row d-flex justify-content-center" >
                     
-                        <a class="btn btn-outline-primary " href="{{route('show.blog',$blog->id)}}">Open</a>&emsp;
-                        @if(Auth::user())
-                        <a class="btn btn-outline-info " href="{{route('e.blog',$blog->id)}}">Edit</a>&emsp;         
+                        <a class="btn btn-outline-info " href="{{route('restore.blog',$blog->id)}}">Restore</a>&emsp;         
                         <form action="{{route('d.blog',$blog->id)}}" method="post">
                             @csrf()
                             @method('delete')
                             <button class='btn btn-danger ' type="submit">Delete</button>
-                        </form>
-                        @endif
+                        </form>   
                 </div>
             
             </td>
@@ -54,7 +48,9 @@ $index=$perPage*$currentPage+1;
             </table>
         </div>
     </div>
-    {{ $blogs->links() }}
-    <a href="{{route('deleted.blog')}}">Soft deleted blogs</a>
+    {{ $blogs->links() }}<br>
+    <div class="text-center">
+        <a class="btn btn-outline-primary" href="{{route('list.blog')}} ">Back</a>
+    </div>
 </div>
 @endsection

@@ -14,7 +14,7 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tags=Tag::paginate(10);
+        $tags=Tag::paginate(5);
         
         return view('tag.tag_list')->withTags($tags);
     }
@@ -89,8 +89,33 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
-        $tag=Tag::find($id);
-        $tag->delete();
-        return redirect('/tag/tag_list');
+        $tag=Tag::withTrashed()->find($id);
+        if($tag->deleted_at)
+        {
+            $tag->forcedelete();
+            session()->flash('danger','tag permanent deleted !');
+        }
+        else
+        {
+            $tag->delete();
+            session()->flash('warning','tag soft deleted !');
+        }
+        return redirect()->back();
+    }
+
+    public function deleted()
+    {
+        $tags=Tag::orderBy('name','ASC')->onlyTrashed()->paginate(5);
+        return view('Tag.deleted_tags')
+        ->withTags($tags);
+    }
+
+    public function restored($id)
+    {
+        
+        $tags=Tag::onlyTrashed()->find($id);
+        $tags->restore();
+        session()->flash('success','The tag is restored successfully');
+        return redirect()->back();
     }
 }

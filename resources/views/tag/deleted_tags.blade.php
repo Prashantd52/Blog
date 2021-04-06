@@ -10,7 +10,6 @@ $index=$perPage*$currentPage+1;
     <br>
     <div class="row">
         <h2 class="card-title col-10"> &emsp;Tags available</h2>
-        <a class="btn btn-primary col-1 " href='/tag/create' >Create</a>
     </div>
         <div class="card-body ">
         <table class="table table-striped" >
@@ -30,7 +29,7 @@ $index=$perPage*$currentPage+1;
         @endforeach
         <td >
         <div class="row d-flex justify-content-center">
-        <a class="btn btn-outline-info " href="/tag/edit/{{$tag->id}}">edit</a>&emsp;
+        <a class="btn btn-outline-dark btn-sm" href="{{route('tag.restore',$tag->id)}}">restore</a>&emsp;
         <form action="/tag/destroy/{{$tag->id}}" method="post">
         @csrf()
         @method('delete')
@@ -44,8 +43,10 @@ $index=$perPage*$currentPage+1;
         </table>
         </div>
     </div>
-    {{ $tags->links() }}
-    <a href="{{route('tag.deleted')}}">Soft deleted tags</a>
+    {{ $tags->links() }}<br>
+    <div class="text-center">
+        <a class="btn btn-outline-primary" href="/tag/tag_list ">Back</a>
+    </div>
 </div>
     
 @endsection

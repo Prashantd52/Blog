@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -15,7 +16,7 @@ class CategoryController extends Controller
     public function index()
     {
         
-        $categories=Category::orderBy('name','ASC')->paginate(10);
+        $categories=Category::orderBy('name','ASC')->paginate(5);
         return view('Category.categories')->withCategories($categories);
     }
 
@@ -94,8 +95,33 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category=Category::find($id);
-        $category->delete();
-        return redirect('/category/categories');
+        $category=Category::withTrashed()->find($id);
+        if($category->deleted_at)
+        {
+            $category->forcedelete();
+            session()->flash('danger','Category permanent deleted');
+        }
+        else
+        {
+            $category->delete();
+            session()->flash('warning','Category Soft deleted!');
+        }
+        return redirect()->back();
+    }
+
+    public function deleted()
+    {
+        $categories=Category::orderBy('name','ASC')->onlyTrashed()->paginate();
+        return view('Category.deleted_index')
+        ->withCategories($categories)
+        ;
+    }
+
+    public function restored($id)
+    {
+        $category=Category::onlyTrashed()->find($id);
+        $category->restore();
+        session()->flash('success','The category is restored successfully');
+        return redirect()->back();
     }
 }

@@ -117,9 +117,33 @@ class BlogController extends Controller
      */
     public function destroy($id)
     {
-        $blog=Blog::find($id);
-        $blog->delete();
-        session()->flash('danger','Blog is deleted successfully');
+        $blog=Blog::withTrashed()->find($id);
+        if($blog->deleted_at)
+        {
+            $blog->forcedelete();
+            session()->flash('danger','Blog is Permanent deleted successfully');
+        }
+        else
+        {
+            $blog->delete();
+            session()->flash('warning','Blog is Soft deleted !');
+        }
+        return redirect()->back();
+    }
+
+    public function deleted()
+    {
+        $blogs=Blog::orderBy('name','ASC')->onlyTrashed()->paginate(5);
+        return view('NewBlog.deleted_blogs')
+        ->withBlogs($blogs);
+    }
+
+    public function restored($id)
+    {
+        
+        $blogs=Blog::onlyTrashed()->find($id);
+        $blogs->restore();
+        session()->flash('success','The Blog is restored successfully');
         return redirect()->back();
     }
 }

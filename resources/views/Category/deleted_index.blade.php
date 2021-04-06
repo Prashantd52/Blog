@@ -1,16 +1,13 @@
 @extends('layouts.app')
 @section('content')
 @php
-$perPage=$categories->perPage();
-$currentPage=$categories->currentPage()-1;
-$index=$perPage*$currentPage+1;
+$index=1;
 @endphp
 <div class="container">
     <div class="card">
     <br>
     <div class="row">
         <h2 class="card-title col-10"> &emsp;Categories available</h2>
-        <a class="btn btn-primary col-1 pt-2"  href='/category/create'>Create</a>
     </div>
         <div class="card-body">
         <table class="table table-striped " >
@@ -33,8 +30,8 @@ $index=$perPage*$currentPage+1;
         </td>
         <td >
         <div class="row d-flex justify-content-center">
-        <a class="btn btn-outline-info" href="/category/edit/{{$category->id}}">edit</a>&emsp;
-            <form action="/category/destroy/{{$category->id}}" method="post">
+                <a class="btn btn-outline-dark btn-sm"href="{{route('category.restore',$category->id)}}">restore</a>&emsp;
+                <form action="/category/destroy/{{$category->id}}" method="post">
                 @csrf()
                 @method('delete')
                 <button class='btn btn-danger ' type="submit">delete</button>
@@ -46,8 +43,10 @@ $index=$perPage*$currentPage+1;
         </table>
         </div>
     </div>
-    {{ $categories->links() }}
-    <a href="{{route('category.deleted')}}">Soft deleted Categories</a>
+    {{ $categories->links() }}<br>
+    <div class="text-center">
+        <a class="btn btn-outline-primary" href="/category/categories">Back</a>
+    </div>
 </div>
     
 @endsection
