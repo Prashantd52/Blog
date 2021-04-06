@@ -9,8 +9,14 @@ $index=$perPage*$currentPage+1;
     <div class="card">
     <br>
     <div class="row">
-        <h2 class="card-title col-10"> &emsp;Tags available</h2>
-        <a class="btn btn-primary col-1 " href='/tag/create' >Create</a>
+        <h2 class="card-title col-8"> &emsp;Tags available
+        <a href='/tag/create' >+</a>
+        </h2>
+        &emsp;&emsp;&emsp;
+       <form class=" pt-1" action="" method="get">
+            <input type="text" placeholder="search Tag" name="searchTN" value={{$srchTN}}>&nbsp;
+            <button type="submit" class="btn btn-outline-info">Go</button>
+        </form>
     </div>
         <div class="card-body ">
         <table class="table table-striped" >

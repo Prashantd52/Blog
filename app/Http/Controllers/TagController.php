@@ -12,11 +12,12 @@ class TagController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tags=Tag::paginate(5);
+        $srchTN=($request->searchTN)?$request->searchTN:'';
+        $tags=Tag::search('name',$srchTN)->paginate(5);
         
-        return view('tag.tag_list')->withTags($tags);
+        return view('tag.tag_list')->withTags($tags)->withSrchTN($srchTN);
     }
 
     /**

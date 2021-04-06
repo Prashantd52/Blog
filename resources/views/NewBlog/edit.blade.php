@@ -3,7 +3,7 @@
 <div class="container">
     <div class="card">
         <br>
-        <form action="/newblog/update/{{$blog->id}}" method="post">
+        <form action="/newblog/update/{{$blog->id}}" method="post"  enctype="multipart/form-data">
             @csrf()
             @method('put')
             <div class="row">
@@ -56,6 +56,10 @@
                     @error('content')
                         <span class='text-danger'>{{$message}}</span>
                     @enderror
+                    <br>
+                    <img style="width:20%;height:20%;" src="{{asset('Image/'.$blog->image)}}" alt="{{$blog->name}}">
+                    <input type="file" name="image">
+                    <br>
                     <br>
                     <button class="btn btn-success col-1" type="submit">Update</button>
                     <a class="btn btn-outline-dark" href="/newblog/blogs" >Cancel</a>

@@ -13,11 +13,12 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        
-        $categories=Category::orderBy('name','ASC')->paginate(5);
-        return view('Category.categories')->withCategories($categories);
+        $srchCN=($request->searchCN)?$request->searchCN:'';
+        $categories=Category::search('name',$srchCN)->orderBy('name','ASC')->paginate(5);
+
+        return view('Category.categories',compact('categories','srchCN'));
     }
 
     /**

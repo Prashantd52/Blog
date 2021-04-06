@@ -9,10 +9,16 @@ $index=$perPage*$currentPage+1;
     <div class="card">
         <br>
         <div class="row">
-            <h2 class="card-title col-10 pt-2">&emsp;Your Blogs</h2>
+            <h2 class="card-title col-8 pt-2">&emsp;Your Blogs
             @if(Auth::user())
-            <a  class="btn btn-info col-1 pt-3" href="/newblog/new">Create</a>
+                <a href="/newblog/new">+</a>
             @endif
+            </h2>
+             &emsp;&emsp;&emsp;
+            <form class=" pt-1" action="" method="get">
+                <input type="text" placeholder="search Blog name" name="searchBN" value={{$srchBN}}>&nbsp;
+                <button type="submit" class="btn btn-outline-info">Go</button>
+            </form>
         </div>
         <div class="card-body">
             <table class="table table-bordered" >

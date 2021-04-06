@@ -10,7 +10,8 @@
             <p class="text-primary">
             @foreach($blog->tags as $tag)
                 #{{$tag->name}}
-        @endforeach</p>
+            @endforeach</p>
+            <img src="{{asset('Image/'.$blog->image)}}" alt="{{$blog->name}}">
             <p>
                 {{$blog->content}}
             </p>

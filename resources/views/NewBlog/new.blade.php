@@ -3,7 +3,7 @@
 <div class="container">
     <div class="card">
         <br>
-        <form action="/newblog/store" method="post">
+        <form action="/newblog/store" method="post" enctype="multipart/form-data">
             @csrf()
             <div class="row">
                 <h3 class="card-title">&emsp;Write new Blog</h3>
@@ -52,6 +52,10 @@
                     @error('content')
                         <span class='text-danger'>{{$message}}</span>
                     @enderror
+                    <br>
+                    <label>Add Image</label>
+                    <input type="file" name="image">
+                    <br>
                     <br>
                     <button class="btn btn-success col-1" type="submit"> Submit</button>
                     <a class="btn btn-outline-dark" href="{{route('list.blog')}}" >Cancel</a>

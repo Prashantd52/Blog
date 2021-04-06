@@ -7,6 +7,7 @@ use App\Category;
 use App\Tag;
 use Session;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image as Photo;
 
 class BlogController extends Controller
 {
@@ -15,10 +16,11 @@ class BlogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $blogs=Blog::paginate(5);
-        return view('NewBlog.blogs')->withBlogs($blogs);
+        $srchBN=($request->searchBN)?$request->searchBN:'';
+        $blogs=Blog::search('name',$srchBN)->paginate(5);
+        return view('NewBlog.blogs')->withBlogs($blogs)->withSrchBN($srchBN);
     }
 
     /**
@@ -52,10 +54,21 @@ class BlogController extends Controller
         $blog->name=$request->name;
         $blog->category_id=$request->category;
         $blog->content=$request->content;
+        if($request->image)
+        {
+            $extension=$request->file('image')->getClientOriginalExtension();
+            if($extension!='png' || $extension!='jpg' || $extension!='jpeg')
+            {
+                session()->flash('danger', 'uploaded file is not an image! TRY AGAIN');
+                return redirect()->back();
+            }
+            $image_name=$this->uploadImage($request->file('image'));
+            $blog->image=$image_name;
+        }
         $blog->save();
         $blog->tags()->sync($request->tags);
         session()->flash('success','Blog is created successfully');
-        return redirect('home');
+        return redirect('newblog/blogs');
     }
 
     /**
@@ -103,6 +116,21 @@ class BlogController extends Controller
         $blog->name=$request->name;
         $blog->category_id=$request->category;
         $blog->content=$request->content;
+        if($request->image)
+        {
+            $extension=$request->file('image')->getClientOriginalExtension();
+            if($extension!='png' || $extension!='jpg' || $extension!='jpeg')
+            {
+                session()->flash('danger', 'uploaded file is not an image! TRY AGAIN');
+                return redirect()->back();
+            }
+            if($blog->image)
+            {
+                $delete=$this->delete_image($blog->image);
+            }
+            $image_name=$this->uploadImage($request->file('image'));
+            $blog->image=$image_name;
+        }
         $blog->save();
         $blog->tags()->sync($request->tags);
         session()->flash('warning','Blog is updated successfully');
@@ -145,5 +173,20 @@ class BlogController extends Controller
         $blogs->restore();
         session()->flash('success','The Blog is restored successfully');
         return redirect()->back();
+    }
+
+    public function uploadImage($image)
+    {
+        $random_name=time();
+        $extension=$image->getClientOriginalExtension();
+        $file_name=$random_name.'.'.$extension;
+        Photo::make($image)->save(public_path('Image/'. $file_name));
+        return $file_name;
+    }
+
+    private function delete_image($image)
+    {
+        $filename = public_path('Image/' . $image);
+        unlink($filename);
     }
 }
