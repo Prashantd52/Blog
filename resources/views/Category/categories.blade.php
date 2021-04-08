@@ -30,7 +30,7 @@ $index=$perPage*$currentPage+1;
         @foreach($categories as $category)
         <tr>
         <td >{{$index++}}</td>
-        <td >{{$category->name}}</td>
+        <td >{{$category->name}} #{{$category->id}}</td>
         <td style="width:40%">{{$category->description}}</td>
         <td>
         @foreach($category->blogs as $blog)
@@ -39,8 +39,8 @@ $index=$perPage*$currentPage+1;
         </td>
         <td >
         <div class="row d-flex justify-content-center">
-        <a class="btn btn-outline-info" href="/category/edit/{{$category->id}}">edit</a>&emsp;
-            <form action="/category/destroy/{{$category->id}}" method="post">
+        <a class="btn btn-outline-info" href="/category/edit/{{$category->slug}}">edit</a>&emsp;
+            <form action="/category/destroy/{{$category->slug}}" method="post">
                 @csrf()
                 @method('delete')
                 <button class='btn btn-danger ' type="submit">delete</button>

@@ -2,16 +2,16 @@
 @section('content')
 <div class="container">
     <div class="card">
-    
-        <h1 class="card-title text-center pt-4">{{$blog->name}}</h1>
-        <p class="text-center">"{{$blog->category->name}}"</p>
+        <h1 class="card-title text-right pt-2">{{$blog->name}}&nbsp;
+        <a  class="btn btn-outline-light col-auto" href="/newblog/blogs">x</a></h1>
+        <p class="text-right pr-5">category: "{{$blog->category->name}}"&emsp;</p>
         <hr style="height:2px;background-color:black;" >
         <div class="card-body">
             <p class="text-primary">
             @foreach($blog->tags as $tag)
                 #{{$tag->name}}
             @endforeach</p>
-            <img src="{{asset('Image/'.$blog->image)}}" alt="{{$blog->name}}">
+            <img style="width:20%;height:20%" src="{{asset('Image/'.$blog->image)}}" alt="{{$blog->name}}">
             <p>
                 {{$blog->content}}
             </p>

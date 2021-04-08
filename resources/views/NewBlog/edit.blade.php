@@ -57,9 +57,17 @@
                         <span class='text-danger'>{{$message}}</span>
                     @enderror
                     <br>
-                    <img style="width:20%;height:20%;" src="{{asset('Image/'.$blog->image)}}" alt="{{$blog->name}}">
+                    <img style="width:20%;height:20%;" src="{{asset('Image/'.$blog->image)}}" alt="Add Image">
                     <input type="file" name="image">
                     <br>
+                    <br>
+                    @if($blog->image)
+                    <a class="btn btn-outline-danger" href="{{route('delete.image',$blog->image)}}">delete image</a>
+                    <br>
+                    @endif
+                    @error('image')
+                        <span class='text-danger'>{{$message}}</span>
+                    @enderror
                     <br>
                     <button class="btn btn-success col-1" type="submit">Update</button>
                     <a class="btn btn-outline-dark" href="/newblog/blogs" >Cancel</a>

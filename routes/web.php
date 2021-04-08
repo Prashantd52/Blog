@@ -13,11 +13,11 @@ Route::middleware(['auth'])->group(function(){
 //category routes
 
 Route::get('category/create','CategoryController@create');
-Route::get('category/edit/{id}','CategoryController@edit');
+Route::get('category/edit/{slug}','CategoryController@edit');
 Route::get('category/categories','CategoryController@index');
 Route::post('/category/store','CategoryController@store');
-Route::put('/category/update/{id}','CategoryController@update');
-Route::delete('/category/destroy/{id}','CategoryController@destroy');
+Route::put('/category/update/{slug}','CategoryController@update');
+Route::delete('/category/destroy/{slug}','CategoryController@destroy');
 Route::get('/category/deleted','CategoryController@deleted')->name('category.deleted');
 Route::get('/category/restore/{category}','CategoryController@restored')->name('category.restore');
 
@@ -40,6 +40,7 @@ Route::put('/newblog/update/{id}','BlogController@update');
 Route::delete('/newblog/delete/{id}','BlogController@destroy')->name('d.blog');
 Route::get('/newblog/deleted','BlogController@deleted')->name('deleted.blog');
 Route::get('/newblog/restore/{id}','BlogController@restored')->name('restore.blog');
+Route::get('/newblog/deleteimage/{image}','BlogController@delete_image_only')->name('delete.image');
 
 });
 Route::get('newblog/blogs','BlogController@index')->name('list.blog');

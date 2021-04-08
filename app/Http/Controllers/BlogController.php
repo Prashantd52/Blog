@@ -19,7 +19,7 @@ class BlogController extends Controller
     public function index(Request $request)
     {
         $srchBN=($request->searchBN)?$request->searchBN:'';
-        $blogs=Blog::search('name',$srchBN)->paginate(5);
+        $blogs=Blog::search('name',$srchBN)->orderBy('name','ASC')->paginate(5);
         return view('NewBlog.blogs')->withBlogs($blogs)->withSrchBN($srchBN);
     }
 
@@ -47,7 +47,8 @@ class BlogController extends Controller
             'name'=>'required|unique:blogs,name',
             'category'=>'required',
             'tags'=>'required',
-            'content'=>'required'
+            'content'=>'required',
+            'image'=>'image'
         ]);
         $blog=new Blog;
        
@@ -56,12 +57,6 @@ class BlogController extends Controller
         $blog->content=$request->content;
         if($request->image)
         {
-            $extension=$request->file('image')->getClientOriginalExtension();
-            if($extension!='png' || $extension!='jpg' || $extension!='jpeg')
-            {
-                session()->flash('danger', 'uploaded file is not an image! TRY AGAIN');
-                return redirect()->back();
-            }
             $image_name=$this->uploadImage($request->file('image'));
             $blog->image=$image_name;
         }
@@ -110,7 +105,8 @@ class BlogController extends Controller
             'name'=>'required|unique:blogs,name,'.$id,
             'category'=>'required',
             'tags'=>'required',
-            'content'=>'required'
+            'content'=>'required',
+            'image'=>'image'
         ]);
         $blog=Blog::find($id);
         $blog->name=$request->name;
@@ -118,12 +114,7 @@ class BlogController extends Controller
         $blog->content=$request->content;
         if($request->image)
         {
-            $extension=$request->file('image')->getClientOriginalExtension();
-            if($extension!='png' || $extension!='jpg' || $extension!='jpeg')
-            {
-                session()->flash('danger', 'uploaded file is not an image! TRY AGAIN');
-                return redirect()->back();
-            }
+           
             if($blog->image)
             {
                 $delete=$this->delete_image($blog->image);
@@ -148,6 +139,10 @@ class BlogController extends Controller
         $blog=Blog::withTrashed()->find($id);
         if($blog->deleted_at)
         {
+            if($blog->image)
+            {
+                $delete=$this->delete_image($blog->image);
+            }
             $blog->forcedelete();
             session()->flash('danger','Blog is Permanent deleted successfully');
         }
@@ -189,4 +184,15 @@ class BlogController extends Controller
         $filename = public_path('Image/' . $image);
         unlink($filename);
     }
+
+    public function delete_image_only($image)
+    {
+        $blog=Blog::where('image',$image)->first();
+        $blog->image="";
+        $blog->save();
+        $filename = public_path('Image/' . $image);
+        unlink($filename);
+        return redirect()->back();
+    }
+
 }

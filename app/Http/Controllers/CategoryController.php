@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+
 
 class CategoryController extends Controller
 {
@@ -40,6 +43,10 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $category=new Category;
+        $str=strtolower($request->name);
+        $slug = preg_replace('/\s+/', '-', $str);
+        $random = Str::random(5);
+        $category->slug=$slug.$random;
         $category->name=$request->name;
         $category->description=$request->description;
         $category->save();
@@ -63,10 +70,11 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($slug)
     {
         
-       $category=Category::find($id);
+       $category=Category::where('slug',$slug)->first();
+
         return view('Category.edit')->withCategory($category);
     }
 
@@ -77,9 +85,13 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
-        $category=Category::find($id);
+        $category=Category::where('slug',$slug)->first();
+        $str=strtolower($request->name);
+        $slug = preg_replace('/\s+/', '-', $str);
+        $random = Str::random(5);
+        $category->slug=$slug.$random;
         $category->name=$request->name;
         $category->description=$request->description;
         $category->save();
@@ -94,9 +106,12 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($slug)
     {
-        $category=Category::withTrashed()->find($id);
+        $category=Category::withTrashed()->where('slug',$slug)->first();
+        
+        $blog=Blog::where('category_id',$category->id)->first();
+        
         if($category->deleted_at)
         {
             $category->forcedelete();
@@ -104,8 +119,16 @@ class CategoryController extends Controller
         }
         else
         {
-            $category->delete();
-            session()->flash('warning','Category Soft deleted!');
+            if($blog!=null)
+            {
+                session()->flash('warning','This category has a blog. So, It will not be deleted !');
+            }
+            else
+            {
+                $category->delete();
+                session()->flash('warning','Category Soft deleted!');
+        
+            }
         }
         return redirect()->back();
     }

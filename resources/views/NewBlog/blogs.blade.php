@@ -27,13 +27,13 @@ $index=$perPage*$currentPage+1;
             <th > Name</th>
             <th >Category</th>
             <th> Tags</th>
-            <th style="text-align: center;">Options</th>
+            <th style="text-align:center;">Options</th>
             </tr>
             @foreach($blogs as $blog)
             <tr>
             <td >{{$index++}}</td>
             <td >{{$blog->name}}</td>
-            <td >{{$blog->category->name}}</td>
+            <td >@if($blog->category){{$blog->category->name}}@endif</td>
             <td>
                 @foreach($blog->tags as $tag)
                 <div class="badge badge-primary">{{$tag->name}}</div>

@@ -56,6 +56,10 @@
                     <label>Add Image</label>
                     <input type="file" name="image">
                     <br>
+                    @error('image')
+                        <span class='text-danger'>{{$message}}</span>
+                    @enderror
+                    <br>
                     <br>
                     <button class="btn btn-success col-1" type="submit"> Submit</button>
                     <a class="btn btn-outline-dark" href="{{route('list.blog')}}" >Cancel</a>

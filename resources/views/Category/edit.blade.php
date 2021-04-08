@@ -4,7 +4,7 @@
         <div class="card">
             <h2 class="card-title">&emsp; Edit Category</h2>
             <div class="card-body">
-                    <form action="/category/update/{{$category->id}}" method="post">
+                    <form action="/category/update/{{$category->slug}}" method="post">
                     @csrf
                     @method('put')
                 <div class="form-group">
