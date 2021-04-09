@@ -3,7 +3,7 @@
 <div class="container">
     <div class="card">
         <br>
-        <form action="/newblog/update/{{$blog->id}}" method="post"  enctype="multipart/form-data">
+        <form action="/newblog/update/{{$blog->slug}}" method="post"  enctype="multipart/form-data">
             @csrf()
             @method('put')
             <div class="row">

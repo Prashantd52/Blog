@@ -8,6 +8,7 @@ use App\Tag;
 use Session;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image as Photo;
+use Illuminate\Support\Str;
 
 class BlogController extends Controller
 {
@@ -19,7 +20,7 @@ class BlogController extends Controller
     public function index(Request $request)
     {
         $srchBN=($request->searchBN)?$request->searchBN:'';
-        $blogs=Blog::search('name',$srchBN)->orderBy('name','ASC')->paginate(5);
+        $blogs=Blog::search('name',$srchBN)->orderBy('name','ASC')->paginate(25);
         return view('NewBlog.blogs')->withBlogs($blogs)->withSrchBN($srchBN);
     }
 
@@ -51,7 +52,10 @@ class BlogController extends Controller
             'image'=>'image'
         ]);
         $blog=new Blog;
-       
+        $str=strtolower($request->name);
+        $random=Str::random(5);
+        $slug=preg_replace('/b/','$',$str);
+        $blog->slug=$slug.$random;
         $blog->name=$request->name;
         $blog->category_id=$request->category;
         $blog->content=$request->content;
@@ -72,9 +76,9 @@ class BlogController extends Controller
      * @param  \App\Blog  $blog
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        $blog=Blog::find($id);
+        $blog=Blog::where('slug',$slug)->first();
         return view('NewBlog.show')->withBlog($blog);
     }
 
@@ -84,9 +88,9 @@ class BlogController extends Controller
      * @param  \App\Blog  $blog
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($slug)
     {
-        $blog=Blog::find($id);
+        $blog=Blog::where('slug',$slug)->first();
         $categories=Category::all();
         $tags=Tag::all();
         return view('NewBlog.edit',compact('blog','tags','categories'));
@@ -99,16 +103,21 @@ class BlogController extends Controller
      * @param  \App\Blog  $blog
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$id)
+    public function update(Request $request,$slug)
     {
+        $blog=Blog::where('slug',$slug)->first();
         $request->validate([
-            'name'=>'required|unique:blogs,name,'.$id,
+            'name'=>'required|unique:blogs,name,'.$blog->id,
             'category'=>'required',
             'tags'=>'required',
             'content'=>'required',
             'image'=>'image'
         ]);
-        $blog=Blog::find($id);
+        //$blog=Blog::where('slug',$slug)->first();
+        $str=strtolower($request->name);
+        $random=Str::random(5);
+        $slug=preg_replace('/b/','$',$str);
+        $blog->slug=$slug.$random;
         $blog->name=$request->name;
         $blog->category_id=$request->category;
         $blog->content=$request->content;
@@ -134,9 +143,9 @@ class BlogController extends Controller
      * @param  \App\Blog  $blog
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($slug)
     {
-        $blog=Blog::withTrashed()->find($id);
+        $blog=Blog::withTrashed()->where('slug',$slug)->first();
         if($blog->deleted_at)
         {
             if($blog->image)
@@ -161,10 +170,10 @@ class BlogController extends Controller
         ->withBlogs($blogs);
     }
 
-    public function restored($id)
+    public function restored($slug)
     {
         
-        $blogs=Blog::onlyTrashed()->find($id);
+        $blogs=Blog::onlyTrashed()->where('slug',$slug)->first();
         $blogs->restore();
         session()->flash('success','The Blog is restored successfully');
         return redirect()->back();

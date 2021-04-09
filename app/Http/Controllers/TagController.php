@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class TagController extends Controller
 {
@@ -15,7 +16,7 @@ class TagController extends Controller
     public function index(Request $request)
     {
         $srchTN=($request->searchTN)?$request->searchTN:'';
-        $tags=Tag::search('name',$srchTN)->paginate(5);
+        $tags=Tag::search('name',$srchTN)->paginate(35);
         
         return view('tag.tag_list')->withTags($tags)->withSrchTN($srchTN);
     }
@@ -61,9 +62,9 @@ class TagController extends Controller
      * @param  \App\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($slug)
     {
-        $tag=Tag::find($id);
+        $tag=Tag::where('slug',$slug)->first();
         return view('tag.edit')->withTag($tag);
     }
 
@@ -74,9 +75,13 @@ class TagController extends Controller
      * @param  \App\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
-        $tag=Tag::find($id);
+        $tag=Tag::where('slug',$slug)->first();
+        $str=strtolower($request->name);
+        $slug = preg_replace('/a/', '-', $str);
+        $random = Str::random(5);
+        $tag->slug=$slug.$random;
         $tag->name=$request->name;
         $tag->save();
         return redirect('/tag/tag_list');
@@ -88,9 +93,9 @@ class TagController extends Controller
      * @param  \App\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($slug)
     {
-        $tag=Tag::withTrashed()->find($id);
+        $tag=Tag::withTrashed()->where('slug',$slug)->first();
         if($tag->deleted_at)
         {
             $tag->forcedelete();
@@ -111,10 +116,10 @@ class TagController extends Controller
         ->withTags($tags);
     }
 
-    public function restored($id)
+    public function restored($slug)
     {
         
-        $tags=Tag::onlyTrashed()->find($id);
+        $tags=Tag::onlyTrashed()->where('slug',$slug)->first();
         $tags->restore();
         session()->flash('success','The tag is restored successfully');
         return redirect()->back();

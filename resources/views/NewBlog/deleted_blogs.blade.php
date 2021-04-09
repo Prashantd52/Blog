@@ -34,8 +34,8 @@ $index=$perPage*$currentPage+1;
             
                 <div class="row d-flex justify-content-center" >
                     
-                        <a class="btn btn-outline-info " href="{{route('restore.blog',$blog->id)}}">Restore</a>&emsp;         
-                        <form action="{{route('d.blog',$blog->id)}}" method="post">
+                        <a class="btn btn-outline-info " href="{{route('restore.blog',$blog->slug)}}">Restore</a>&emsp;         
+                        <form action="{{route('d.blog',$blog->slug)}}" method="post">
                             @csrf()
                             @method('delete')
                             <button class='btn btn-danger ' type="submit">Delete</button>

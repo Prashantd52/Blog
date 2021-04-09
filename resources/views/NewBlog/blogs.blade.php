@@ -43,10 +43,10 @@ $index=$perPage*$currentPage+1;
             
                 <div class="row d-flex justify-content-center" >
                     
-                        <a class="btn btn-outline-primary " href="{{route('show.blog',$blog->id)}}">Open</a>&emsp;
+                        <a class="btn btn-outline-primary " href="{{route('show.blog',$blog->slug)}}">Open</a>&emsp;
                         @if(Auth::user())
-                        <a class="btn btn-outline-info " href="{{route('e.blog',$blog->id)}}">Edit</a>&emsp;         
-                        <form action="{{route('d.blog',$blog->id)}}" method="post">
+                        <a class="btn btn-outline-info " href="{{route('e.blog',$blog->slug)}}">Edit</a>&emsp;         
+                        <form action="{{route('d.blog',$blog->slug)}}" method="post">
                             @csrf()
                             @method('delete')
                             <button class='btn btn-danger ' type="submit">Delete</button>

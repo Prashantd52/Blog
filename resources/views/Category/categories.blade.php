@@ -30,7 +30,7 @@ $index=$perPage*$currentPage+1;
         @foreach($categories as $category)
         <tr>
         <td >{{$index++}}</td>
-        <td >{{$category->name}} #{{$category->id}}</td>
+        <td style="width:10%">{{$category->name}}</td>
         <td style="width:40%">{{$category->description}}</td>
         <td>
         @foreach($category->blogs as $blog)

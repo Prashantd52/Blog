@@ -29,8 +29,8 @@ $index=$perPage*$currentPage+1;
         @endforeach
         <td >
         <div class="row d-flex justify-content-center">
-        <a class="btn btn-outline-dark btn-sm" href="{{route('tag.restore',$tag->id)}}">restore</a>&emsp;
-        <form action="/tag/destroy/{{$tag->id}}" method="post">
+        <a class="btn btn-outline-dark btn-sm" href="{{route('tag.restore',$tag->slug)}}">restore</a>&emsp;
+        <form action="/tag/destroy/{{$tag->slug}}" method="post">
         @csrf()
         @method('delete')
         <button class='btn btn-danger ' type="submit">delete</button>

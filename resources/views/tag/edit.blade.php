@@ -4,7 +4,7 @@
         <div class="card">
             <h2 class="card-title">&emsp; Edit Tag</h2>
             <div class="card-body">
-                    <form action="/tag/update/{{$tag->id}}" method="post">
+                    <form action="/tag/update/{{$tag->slug}}" method="post">
                      @csrf
                      @method('put')   
                 <div class="form-group">

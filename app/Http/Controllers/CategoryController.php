@@ -109,7 +109,6 @@ class CategoryController extends Controller
     public function destroy($slug)
     {
         $category=Category::withTrashed()->where('slug',$slug)->first();
-        
         $blog=Blog::where('category_id',$category->id)->first();
         
         if($category->deleted_at)
@@ -141,9 +140,9 @@ class CategoryController extends Controller
         ;
     }
 
-    public function restored($id)
+    public function restored($slug)
     {
-        $category=Category::onlyTrashed()->find($id);
+        $category=Category::onlyTrashed()->where('slug',$slug)->first();
         $category->restore();
         session()->flash('success','The category is restored successfully');
         return redirect()->back();

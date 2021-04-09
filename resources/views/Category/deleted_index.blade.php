@@ -21,7 +21,7 @@ $index=1;
         @foreach($categories as $category)
         <tr>
         <td >{{$index++}}</td>
-        <td >{{$category->name}}</td>
+        <td style="width:10%">{{$category->name}}</td>
         <td style="width:40%">{{$category->description}}</td>
         <td>
         @foreach($category->blogs as $blog)
@@ -30,8 +30,8 @@ $index=1;
         </td>
         <td >
         <div class="row d-flex justify-content-center">
-                <a class="btn btn-outline-dark btn-sm"href="{{route('category.restore',$category->id)}}">restore</a>&emsp;
-                <form action="/category/destroy/{{$category->id}}" method="post">
+                <a class="btn btn-outline-dark btn-sm"href="{{route('category.restore',$category->slug)}}">restore</a>&emsp;
+                <form action="/category/destroy/{{$category->slug}}" method="post">
                 @csrf()
                 @method('delete')
                 <button class='btn btn-danger ' type="submit">delete</button>
