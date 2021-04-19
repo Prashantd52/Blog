@@ -63,6 +63,11 @@
                             <li class="nav-link"><a class="btn btn-outline-success" href="/newblog/blogs" >Blogs</a></li>
                             <li class="nav-link"><a class="btn btn-outline-primary" href="/tag/tag_list">tags</a></li>
                             <li class="nav-link"><a class="btn btn-outline-secondary" href="/category/categories">Category</a> </li>
+                            @role('superadministrator')
+                            <li class="nav-link"><a class="btn btn-secondary" href="{{route('i.role')}}">Role</a> </li>
+                            <li class="nav-link"><a class="btn btn-secondary" href="{{route('i.permission')}}">Permissions</a> </li>
+                            <li class="nav-link"><a class="btn btn-secondary" href="{{route('i.user_role')}}">User-Role</a> </li>
+                            @endrole
                             &emsp;
                             <li class="nav-item dropdown">
                                 <a  id="navbarDropdown" class="nav-link dropdown-toggle " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

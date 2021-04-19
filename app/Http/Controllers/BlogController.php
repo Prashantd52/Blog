@@ -20,7 +20,7 @@ class BlogController extends Controller
     public function index(Request $request)
     {
         $srchBN=($request->searchBN)?$request->searchBN:'';
-        $blogs=Blog::search('name',$srchBN)->orderBy('name','ASC')->paginate(25);
+        $blogs=Blog::search('name',$srchBN)->orderBy('name','ASC')->paginate(5);
         return view('NewBlog.blogs')->withBlogs($blogs)->withSrchBN($srchBN);
     }
 

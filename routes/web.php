@@ -46,3 +46,28 @@ Route::get('/newblog/deleteimage/{image}','BlogController@delete_image_only')->n
 Route::get('newblog/blogs','BlogController@index')->name('list.blog');
 Route::get('/newblog/show/{slug}','BlogController@show')->name('show.blog');
 
+//Role Routes
+Route::get('role/create','AuthorizationController@role_create')->name('c.role');
+Route::get('role/edit/{id}','AuthorizationController@role_edit')->name('e.role');
+Route::get('role/role_list','AuthorizationController@role_index')->name('i.role');
+Route::post('role/store','AuthorizationController@role_store')->name('s.role');
+Route::put('role/update/{id}','AuthorizationController@role_update')->name('u.role');
+Route::delete('role/destroy/{id}','AuthorizationController@role_destroy')->name('d.role');
+
+//Permission routes
+Route::get('permission/create','AuthorizationController@permission_create')->name('c.permission');
+Route::get('permission/edit/{id}','AuthorizationController@permission_edit')->name('e.permission');
+Route::get('permission/permission_list','AuthorizationController@permission_index')->name('i.permission');
+Route::post('permission/store','AuthorizationController@permission_store')->name('s.permission');
+Route::put('permission/update/{id}','AuthorizationController@permission_update')->name('u.permission');
+Route::delete('permission/destroy/{id}','AuthorizationController@permission_destroy')->name('d.permission');
+
+//User Role routes
+Route::get('user_role/edit/{id}','AuthorizationController@user_role_edit')->name('e.user_role');
+Route::get('user_role/user_role_list','AuthorizationController@user_role_index')->name('i.user_role');
+Route::put('user_role/update/{id}','AuthorizationController@user_role_update')->name('u.user_role');
+
+//Permission role routes
+Route::get('permission_role/edit/{id}','AuthorizationController@permission_role_edit')->name('e.permission_role');
+Route::get('permission_role/permission_role_list','AuthorizationController@permission_role_index')->name('i.permission_role');
+Route::put('permission_role/update/{id}','AuthorizationController@permission_role_update')->name('u.permission_role');
