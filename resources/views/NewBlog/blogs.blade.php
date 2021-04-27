@@ -10,9 +10,9 @@ $index=$perPage*$currentPage+1;
         <br>
         <div class="row">
             <h2 class="card-title col-8 pt-2">&emsp;Your Blogs
-            @if(Auth::user())
+            @permission('blog-create')
                 <a href="/newblog/new">+</a>
-            @endif
+            @endpermission
             </h2>
              &emsp;&emsp;&emsp;
             <form class=" pt-1" action="" method="get">
@@ -44,14 +44,14 @@ $index=$perPage*$currentPage+1;
                 <div class="row d-flex justify-content-center" >
                     
                         <a class="btn btn-outline-primary " href="{{route('show.blog',$blog->slug)}}">Open</a>&emsp;
-                        @if(Auth::user())
+                        @permission('blog-edit')
                         <a class="btn btn-outline-info " href="{{route('e.blog',$blog->slug)}}">Edit</a>&emsp;         
                         <form action="{{route('d.blog',$blog->slug)}}" method="post">
                             @csrf()
                             @method('delete')
                             <button class='btn btn-danger ' type="submit">Delete</button>
                         </form>
-                        @endif
+                        @endpermission
                 </div>
             
             </td>

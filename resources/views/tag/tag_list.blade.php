@@ -10,7 +10,9 @@ $index=$perPage*$currentPage+1;
     <br>
     <div class="row">
         <h2 class="card-title col-8"> &emsp;Tags available
+        @permission('tag-create')
         <a href='/tag/create' >+</a>
+        @endpermission
         </h2>
         &emsp;&emsp;&emsp;
        <form class=" pt-1" action="" method="get">
@@ -24,7 +26,9 @@ $index=$perPage*$currentPage+1;
         <th  style="width:20%">Sr.no.</th>
         <th > Name</th>
         <th>Blogs</th>
+        @permission('tag-update')
         <th style="text-align: center;">Options</th>
+        @endpermission
         </tr>
         @foreach($tags as $tag)
         <tr>
@@ -34,6 +38,7 @@ $index=$perPage*$currentPage+1;
         @foreach($tag->blogs as $blog)
            <a href="{{route('show.blog',$blog->id)}}" class="badge badge-success">{{$blog->name}}</a>
         @endforeach
+        @permission('tag-update')
         <td >
         <div class="row d-flex justify-content-center">
         <a class="btn btn-outline-info " href="/tag/edit/{{$tag->slug}}">edit</a>&emsp;
@@ -44,6 +49,7 @@ $index=$perPage*$currentPage+1;
         </form>
         </div>
         </td>
+        @endpermission
         </tr>
         @endforeach
         

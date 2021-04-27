@@ -134,7 +134,7 @@ class BlogController extends Controller
         $blog->save();
         $blog->tags()->sync($request->tags);
         session()->flash('warning','Blog is updated successfully');
-        return redirect('newblog/blogs');
+        return redirect(route('show.blog',$blog->slug));
     }
 
     /**
@@ -204,4 +204,5 @@ class BlogController extends Controller
         return redirect()->back();
     }
 
+    
 }

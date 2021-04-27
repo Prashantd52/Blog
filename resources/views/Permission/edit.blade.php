@@ -10,7 +10,7 @@
     @method('put')
         <div class="row form-group pl-3">
             <label >Name</label>&emsp;
-            <input  type="text" name="name" placeholder="enter permission name" value="{{$permission->name}}" required>&emsp;
+            <input  type="text" name="name" placeholder="enter permission name" value="{{$permission->name}}" readonly>&emsp;
             <label>Display Name</label>&emsp;
             <input  type="text" name="display_name" placeholder="Name to be displaced" value="{{$permission->display_name}}" required>
         </div>

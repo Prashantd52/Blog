@@ -31,6 +31,7 @@
     </div>
     <br>
     <button class="btn btn-success">update</button>
+    <a class="btn btn-primary" href="{{route('i.user_role')}}">cancel</a>
     </form>
 </div>
 @endsection

@@ -10,7 +10,9 @@ $index=$perPage*$currentPage+1;
     <br>
     <div class="row">
         <h2 class="card-title col-8"> &emsp;Categories available
+        @permission('category-create')
         <a href='/category/create'>+</a>
+        @endpermission
         </h2>
         &emsp;&emsp;&emsp;
        <form class=" pt-1" action="" method="get">
@@ -25,7 +27,9 @@ $index=$perPage*$currentPage+1;
         <th > Name</th>
         <th >Description</th>
         <th >Blogs</th>
+        @role('administrator')
         <th style="text-align: center;">Options</th>
+        @endrole
         </tr>
         @foreach($categories as $category)
         <tr>
@@ -37,6 +41,7 @@ $index=$perPage*$currentPage+1;
             <a href="{{route('show.blog',$blog->id)}}" class="badge badge-info">{{$blog->name}}</a>
         @endforeach
         </td>
+        @role('administrator')
         <td >
         <div class="row d-flex justify-content-center">
         <a class="btn btn-outline-info" href="/category/edit/{{$category->slug}}">edit</a>&emsp;
@@ -45,8 +50,9 @@ $index=$perPage*$currentPage+1;
                 @method('delete')
                 <button class='btn btn-danger ' type="submit">delete</button>
             </form>
-            </td>
         </div>
+        </td>
+        @endrole
         </tr>
         @endforeach
         </table>
